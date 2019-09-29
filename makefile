@@ -47,6 +47,7 @@ PC_OBJS = \
 	./object/source/pc/pc_print.o \
 	./object/source/pc/pc_loop.o \
 	./object/source/pc/pc_timestamp.o
+	
 
 ARM_DEPS = \
 	./object/board/board.d \
