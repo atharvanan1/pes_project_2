@@ -14,7 +14,7 @@ void loop(uint16_t number)
 		while(number != 0)
 		{
 			number--;
-			asm("NOP");
+			//asm("NOP");
 		}
 	}
 }

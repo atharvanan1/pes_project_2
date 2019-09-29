@@ -9,12 +9,10 @@
 
 void loop(uint16_t number)
 {
-	for (uint16_t i = 2000; i > 0; i--)
+	uint64_t something = 1600000;
+	while((something * number) != 0)
 	{
-		while(number != 0)
-		{
-			number--;
-			__asm("NOP");
-		}
+		something--;
+		__asm("NOP");
 	}
 }

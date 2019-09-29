@@ -9,7 +9,10 @@
 
 void proc_init(void)
 {
-	;
+	while(0)
+	{
+		;
+	}
 }
 
 void led_execute(uint8_t flag, uint8_t mode)
@@ -20,20 +23,20 @@ void led_execute(uint8_t flag, uint8_t mode)
 	{
 		led = "RED";
 	}
-	else if (flag == RED)
+	else if (flag == BLUE)
 	{
-		led = "RED";
+		led = "BLUE";
 	}
-	else if (flag == RED)
+	else if (flag == GREEN)
 	{
-		led = "RED";
+		led = "GREEN";
 	}
 
-	if (mode == 0)
+	if (mode == 1)
 	{
 		state = "OFF";
 	}
-	else if (mode == 1)
+	else if (mode == 0)
 	{
 		state = "ON";
 	}

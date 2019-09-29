@@ -3,7 +3,7 @@ ARM_LL = arm-none-eabi-gcc
 PC_CC = gcc
 
 EXE := \
-	./object/MyMakeProject.axf
+	./object/pes_project_2.axf
 
 PC_FLAGS := -Wall -Werror -c -std=c99 -g3
 
@@ -44,8 +44,8 @@ ARM_OBJS = \
 	./object/source/fb/fb_loop.o
 
 PC_OBJS = \
-	./object/pc/pc_print.o \
-	./object/pc/pc_loop.o
+	./object/source/pc/pc_print.o \
+	./object/source/pc/pc_loop.o
 
 ARM_DEPS = \
 	./object/board/board.d \
@@ -69,15 +69,25 @@ ARM_DEPS = \
 
 all: fb_run
 
+pc_run:	directories $(PC_OBJS)
+	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_RUN -o ./object/source/main.o ./source/main.c
+	$(PC_CC) -o $(PC_OBJS) ./object/source/main.o -o $(EXE)
+	./$(EXE)
+	
+pc_debug: directories $(PC_OBJS)
+	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_DEBUG -o ./object/source/main.o ./source/main.c
+	$(PC_CC) -o $(PC_OBJS) ./object/source/main.o -o $(EXE)
+	./$(EXE)
 
-fb_run: directories $(ARM_OBJS) arm_run_main linkerfile.ld
+fb_run: directories $(ARM_OBJS) linkerfile.ld
+	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_RUN -o ./object/source/main.o ./source/main.c
 	$(ARM_LL) $(LL_FLAGS) $(ARM_OBJS) ./object/source/main.o
-fb_debug: directories  $(ARM_OBJS) arm_debug_main linkerfile.ld
+	
+fb_debug: directories  $(ARM_OBJS) linkerfile.ld
+	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_DEBUG -o ./object/source/main.o ./source/main.c
 	$(ARM_LL) $(LL_FLAGS) $(ARM_OBJS) ./object/source/main.o
-pc_run:	directories $(PC_OBJS) pc_run_main
-	$(PC_CC) -o $(PC_OBJS) ./object/source/main.o -o $(EXE)
-pc_debug: directories $(PC_OBJS) pc_debug_main
-	$(PC_CC) -o $(PC_OBJS) ./object/source/main.o -o $(EXE)
+	
+
 
 # https://stackoverflow.com/questions/1950926/create-directories-using-make-file
 # Leveraged code
@@ -87,6 +97,7 @@ OUT_DIR := object object/CMSIS object/drivers object/board object/source \
 MK := mkdir -p
 directories:
 	$(MK) $(OUT_DIR)
+
 
 # https://mcuoneclipse.com/2017/07/22/tutorial-makefile-projects-with-eclipse/
 # Leveraged code
@@ -113,23 +124,9 @@ directories:
 
 
 	
-./object/pc/%.o: ./source/pc/%.c
-	$(PC_CC) $(PC_FLAGS) -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+./object/source/pc/%.o: ./source/pc/%.c
+	$(PC_CC) $(PC_FLAGS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 
-
-
-	
-arm_run_main: ./source/main.c ./source/main.h ./source/fb/fb_led.h ./source/fb/fb_loop.h
-	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_RUN -o ./object/source/main.o ./source/main.c
-
-arm_debug_main: ./source/main.c ./source/main.h ./source/fb/fb_led.h ./source/fb/fb_loop.h
-	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_DEBUG -o ./object/source/main.o ./source/main.c
-
-pc_run_main: ./source/main.c ./source/main.h ./source/fb/fb_led.h ./source/fb/fb_loop.h
-	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_RUN -o ./object/source/main.o ./source/main.c
-	
-pc_debug_main: ./source/main.c ./source/main.h ./source/fb/fb_led.h ./source/fb/fb_loop.h
-	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_DEBUG -o ./object/source/main.o ./source/main.c
 	
 clean:
 	rm -rf object

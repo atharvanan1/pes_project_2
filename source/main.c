@@ -7,21 +7,6 @@
 
 #include "main.h"
 
-#ifdef FB_RUN
-	#include "fb_loop.h"
-	#include "fb_led.h"
-#elif FB_DEBUG
-	#include "fb_loop.h"
-	#include "fb_led.h"
-#elif PC_RUN
-	#include "pc_loop.h"
-	#include "pc_print.h"
-	#include <stdint.h>
-#elif PC_DEBUG
-	#include "pc_loop.h"
-	#include "pc_print.h"
-	#include <stdint.h>
-#endif
 
 uint16_t time_table[20] = {3000, 1000, 2000, 600, 1000, 400, 1000,\
 		                   200, 500, 100, 500, 100, 500, 100, 1000,\
@@ -40,11 +25,12 @@ int main(void)
 	{
 		for (uint8_t j = 0; j < 20; j++)
 		{
+			mode = looper % 2;
+			flag = looper / 6;
 			led_execute(flag, mode);
 			loop(time_table[j]);
+			(looper == 17)?looper = 0:looper;
 			looper++;
-			mode = looper % 2;
-			flag = looper % 3;
 		}
 	}
 	return 0;
