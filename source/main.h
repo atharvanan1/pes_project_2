@@ -9,7 +9,4 @@
 #define SOURCE_MAIN_H_
 #endif /* SOURCE_MAIN_H_ */
 
-
-#define RED 	(0)
-#define BLUE 	(1)
-#define GREEN 	(2)
+#include <stdint.h>
