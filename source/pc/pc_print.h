@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "pc_timestamp.h"
 
 #define RED 	(0)
 #define BLUE 	(1)
