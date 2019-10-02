@@ -11,7 +11,7 @@
       <description>Configuration imported from pes_project_2</description>
    </common>
    <preferences>
-      <validate_boot_init_only>true</validate_boot_init_only>
+      <validate_boot_init_only>false</validate_boot_init_only>
       <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
    </preferences>
@@ -34,6 +34,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="RTC" description="Peripheral RTC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="core0">
                         <data>true</data>
@@ -48,6 +53,8 @@
                <pins>
                   <pin peripheral="UART0" signal="TX" pin_num="28" pin_signal="TSI0_CH3/PTA2/UART0_TX/TPM2_CH1"/>
                   <pin peripheral="UART0" signal="RX" pin_num="27" pin_signal="TSI0_CH2/PTA1/UART0_RX/TPM2_CH0"/>
+                  <pin peripheral="RTC" signal="CLKIN" pin_num="56" pin_signal="ADC0_SE15/TSI0_CH14/PTC1/LLWU_P6/RTC_CLKIN/I2C1_SCL/TPM0_CH0"/>
+                  <pin peripheral="RTC" signal="CLKOUT" pin_num="1" pin_signal="PTE0/UART1_TX/RTC_CLKOUT/CMP0_OUT/I2C1_SDA"/>
                </pins>
             </function>
          </functions_list>

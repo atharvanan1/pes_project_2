@@ -11,7 +11,6 @@
 
 #include <stdint.h>
 #include <time.h>
-#include "fsl_rtc.h"
 
 clock_t prevEvent;
 clock_t thisEvent;
@@ -21,8 +20,6 @@ struct tm *time_data;
 
 uint8_t flag;
 uint8_t mode;
-
-extern rtc_config_t *rtclock;
 
 #ifdef PC_RUN
 	#include "pc_loop.h"

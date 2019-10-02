@@ -9,8 +9,9 @@
 #define FB_FB_DEBUG_H_
 #endif /* FB_FB_DEBUG_H_ */
 
-#include "fsl_rtc.h"
-#include "fsl_debug_console.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <time.h>
 
 #define RED (0)
 #define BLUE (1)
@@ -18,7 +19,10 @@
 
 extern uint8_t flag;
 extern uint8_t mode;
-extern rtc_config_t *rtclock;
+
+extern clock_t prevEvent;
+extern clock_t thisEvent;
+extern double diffEvent;
 
 void rtc_init(void);
 void debug(void);

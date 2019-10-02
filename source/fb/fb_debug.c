@@ -11,15 +11,13 @@
 // Leveraged Code - https://www.adamtornhill.com/Patterns%20in%20C%204,%20OBSERVER.pdf
 // Observer Pattern
 
-void rtc_init(void)
-{
-	RTC_GetDefaultConfig(rtclock);
-	RTC_Init(RTC, rtclock);
-}
-
 void debug(void)
 {
 	print(flag, mode);
+	prevEvent = thisEvent;
+	thisEvent = clock();
+	diffEvent = (double)(thisEvent - prevEvent)/CLOCKS_PER_SEC;
+	diffEvent = diffEvent * 1000;
 }
 
 static void print(uint8_t flag, uint8_t mode)

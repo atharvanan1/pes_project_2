@@ -8,8 +8,8 @@
 
 #include "pc_debug.h"
 
-// Leveraged Code - https://www.adamtornhill.com/Patterns%20in%20C%204,%20OBSERVER.pdf
-// Observer Pattern
+// Leveraged Code - https://stackoverflow.com/questions/5248915/execution-time-of-c-program
+// Time Difference
 
 void debug(void)
 {

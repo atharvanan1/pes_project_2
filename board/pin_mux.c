@@ -81,7 +81,11 @@ void BOARD_InitPins(void) {
   CLOCK_EnableClock(kCLOCK_PortA);                           /* Port A Clock Gate Control: Clock enabled */
   CLOCK_EnableClock(kCLOCK_PortB);                           /* Port B Clock Gate Control: Clock enabled */
   CLOCK_EnableClock(kCLOCK_PortD);                           /* Port D Clock Gate Control: Clock enabled */
+  CLOCK_EnableClock(kCLOCK_PortC);
+  CLOCK_EnableClock(kCLOCK_PortE);
 
+  PORT_SetPinMux(PORTC, 1U, kPORT_MuxAsGpio);
+  PORT_SetPinMux(PORTE, 0U, kPORT_MuxAlt4);
   PORT_SetPinMux(PORTA, PIN1_IDX, kPORT_MuxAlt2);            /* PORTA1 (pin 27) is configured as UART0_RX */
   PORT_SetPinMux(PORTA, PIN2_IDX, kPORT_MuxAlt2);            /* PORTA2 (pin 28) is configured as UART0_TX */
   PORT_SetPinMux(PORTB, PIN18_IDX, kPORT_MuxAsGpio);         /* PORTB18 (pin 53) is configured as PTB18 */
