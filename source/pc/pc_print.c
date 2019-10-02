@@ -41,11 +41,5 @@ void led_execute(uint8_t flag, uint8_t mode)
 		state = "ON";
 	}
 
-	printf("LED %5s %3s\t", led, state);
-
-#ifdef PC_DEBUG
-	add_time_stamp();
-#endif
-	printf("\n");
+	printf("\nLED %5s %3s\t", led, state);
 }
-

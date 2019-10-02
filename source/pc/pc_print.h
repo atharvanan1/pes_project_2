@@ -1,7 +1,7 @@
 /*
  * pc_print.h
  *
- *  Created on: Sep 29, 2019
+ *  Created on: Oct 1, 2019
  *      Author: azzentys
  */
 
@@ -11,11 +11,11 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "pc_timestamp.h"
 
-#define RED 	(0)
-#define BLUE 	(1)
-#define GREEN 	(2)
+
+#define RED (0)
+#define BLUE (1)
+#define GREEN (2)
 
 void proc_init(void);
 void led_execute(uint8_t flag, uint8_t mode);

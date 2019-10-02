@@ -5,7 +5,7 @@ PC_CC = gcc
 EXE := \
 	./object/pes_project_2.axf
 
-PC_FLAGS := -Wall -Werror -c -std=c99 -g3
+PC_FLAGS := -Wall -Werror -c -std=c99 -O0 -g3
 
 ARM_FLAGS := -c -std=gnu99 -O0 \
 	-g3 -fmessage-length=0 -ffunction-sections -fdata-sections \
@@ -19,7 +19,7 @@ ARM_INCS := -I"./board" -I"./CMSIS" -I"./drivers" -I"./source" -I"./startup" -I"
 
 ARM_DEFS := -D__REDLIB__ -DDEBUG -DCPU_MKL25Z128VLK4 \
 	-DFRDM_KL25Z -DFREEDOM -DCPU_MKL25Z128VLK4_cm0plus \
-	-DSDK_DEBUGCONSOLE=0 -DCR_INTEGER_PRINTF -D__MCUXPRESSO \
+	-DSDK_DEBUGCONSOLE=1 -DCR_INTEGER_PRINTF -D__MCUXPRESSO \
 	-D__USE_CMSIS
 
 PC_INCS := -I"./source" -I"./source/pc"
@@ -41,12 +41,13 @@ ARM_OBJS = \
 	./object/startup/startup_mkl25z4.o \
 	./object/utilities/fsl_debug_console.o \
 	./object/source/fb/fb_led.o \
-	./object/source/fb/fb_loop.o
+	./object/source/fb/fb_loop.o \
+	./object/source/fb/fb_debug.o
 
 PC_OBJS = \
 	./object/source/pc/pc_print.o \
 	./object/source/pc/pc_loop.o \
-	./object/source/pc/pc_timestamp.o
+	./object/source/pc/pc_debug.o
 	
 
 ARM_DEPS = \
@@ -65,21 +66,22 @@ ARM_DEPS = \
 	./object/drivers/fsl_uart.d \
 	./object/startup/startup_mkl25z4.d \
 	./object/utilities/fsl_debug_console.d \
-	./object/source/fb/fb_led.o \
-	./object/source/fb/fb_loop.o
+	./object/source/fb/fb_led.d \
+	./object/source/fb/fb_loop.d \
+	./object/source/fb/fb_debug.d
 	
 
 all: fb_run
 
 pc_run:	directories $(PC_OBJS)
 	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_RUN -o ./object/source/main.o ./source/main.c
-	$(PC_CC) -o $(PC_OBJS) ./object/source/main.o -o $(EXE)
-	./$(EXE)
+	$(PC_CC) $(PC_OBJS) ./object/source/main.o -o $(EXE)
+	#./$(EXE)
 	
 pc_debug: directories $(PC_OBJS)
 	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_DEBUG -o ./object/source/main.o ./source/main.c
-	$(PC_CC) -o $(PC_OBJS) ./object/source/main.o -o $(EXE)
-	./$(EXE)
+	$(PC_CC) $(PC_OBJS) ./object/source/main.o -o $(EXE)
+	#./$(EXE)
 
 fb_run: directories $(ARM_OBJS) linkerfile.ld
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_RUN -o ./object/source/main.o ./source/main.c

@@ -10,17 +10,32 @@
 #endif /* SOURCE_MAIN_H_ */
 
 #include <stdint.h>
+#include <time.h>
+#include "fsl_rtc.h"
+
+clock_t prevEvent;
+clock_t thisEvent;
+double diffEvent;
+
+struct tm *time_data;
+
+uint8_t flag;
+uint8_t mode;
+
+extern rtc_config_t *rtclock;
 
 #ifdef PC_RUN
 	#include "pc_loop.h"
-	#include "pc_print.c"
+	#include "pc_print.h"
 #elif FB_RUN
 	#include "fb_loop.h"
 	#include "fb_led.h"
 #elif FB_DEBUG
 	#include "fb_loop.h"
 	#include "fb_led.h"
+	#include "fb_debug.h"
 #elif PC_DEBUG
 	#include "pc_loop.h"
-	#include "pc_print.c"
+	#include "pc_print.h"
+	#include "pc_debug.h"
 #endif

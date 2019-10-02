@@ -9,10 +9,10 @@
 
 void loop(uint16_t number)
 {
-	uint64_t something = 1600000;
-	while((something * number) != 0)
+	uint64_t loop_var = number * 2300;
+	while((loop_var) != 0)
 	{
-		something--;
-		__asm("NOP");
+		loop_var--;
+		__asm volatile ("nop");
 	}
 }

@@ -36,16 +36,22 @@ void proc_init(void)
 
 void led_execute(uint8_t flag, uint8_t mode)
 {
+	char *type = NULL;
+	char *state = NULL;
 	if (flag == RED)
 	{
 		GPIO_WritePinOutput(RED_GPIO, RED_PIN, mode);
+		type = "RED";
 	}
 	else if (flag == BLUE)
 	{
 		GPIO_WritePinOutput(BLUE_GPIO, BLUE_PIN, mode);
+		type = "BLUE";
 	}
 	else if (flag == GREEN)
 	{
 		GPIO_WritePinOutput(GREEN_GPIO, GREEN_PIN, mode);
+		type = "GREEN";
 	}
+	state = (mode == 1)?"ON":"OFF";
 }
