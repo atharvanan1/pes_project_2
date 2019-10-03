@@ -1,29 +1,36 @@
+# Compilers
 ARM_CC = arm-none-eabi-gcc
 ARM_LL = arm-none-eabi-gcc
 PC_CC = gcc
 
+# Executable file
 EXE := \
 	./Debug/pes_project_2.axf
 
+# Compiler Flags
 PC_FLAGS := -Wall -Werror -c -std=c99 -O0 -g3
 
 ARM_FLAGS := -c -std=gnu99 -O0 \
 	-g3 -fmessage-length=0 -ffunction-sections -fdata-sections \
 	-fno-builtin -fno-common -mcpu=cortex-m0plus -mthumb
 
+# Linker Flags
 LL_FLAGS := -nostdlib -Xlinker -Map="Debug/pes_project_2.map" \
 	-Xlinker --gc-sections -Xlinker -print-memory-usage \
 	-mcpu=cortex-m0plus -mthumb -T linkerfile.ld -o $(EXE)
 
+# Include directories
 ARM_INCS := -I"./board" -I"./CMSIS" -I"./drivers" -I"./source" -I"./startup" -I"./utilities" -I"./source/fb" -I"./include"
 
 PC_INCS := -I"./source" -I"./source/pc"
 
+# ARM defines
 ARM_DEFS := -D__REDLIB__ -DDEBUG -DCPU_MKL25Z128VLK4 \
 	-DFRDM_KL25Z -DFREEDOM -DCPU_MKL25Z128VLK4_cm0plus \
 	-DSDK_DEBUGCONSOLE=0 -DCR_INTEGER_PRINTF -D__MCUXPRESSO \
 	-D__USE_CMSIS
 
+# ARM Object Files
 ARM_OBJS = \
 	./Debug/board/board.o \
 	./Debug/board/clock_config.o \
@@ -44,6 +51,7 @@ ARM_OBJS = \
 	./Debug/source/fb/fb_loop.o \
 	./Debug/source/fb/fb_debug.o
 
+# ARM Dependency Files
 ARM_DEPS = \
 	./Debug/board/board.d \
 	./Debug/board/clock_config.d \
@@ -64,16 +72,19 @@ ARM_DEPS = \
 	./Debug/source/fb/fb_loop.d \
 	./Debug/source/fb/fb_debug.d
 
+# PC Object Files
 PC_OBJS = \
 	./Debug/source/pc/pc_print.o \
 	./Debug/source/pc/pc_loop.o \
 	./Debug/source/pc/pc_debug.o
-	
+
+# PC Dependencies Files
 PC_DEPS = \
 	./Debug/source/pc/pc_print.d \
 	./Debug/source/pc/pc_loop.d \
 	./Debug/source/pc/pc_debug.d
 
+# Conditional Execution
 ifeq ($(BV),FB_RUN)
 build_version := fb_run
 else ifeq ($(BV),FB_DEBUG)
@@ -84,10 +95,13 @@ else ifeq ($(BV),PC_DEBUG)
 build_version := pc_debug
 endif
 
+# Rule for all
 all: $(EXE)
 
+# Rule for executable
 $(EXE): $(build_version)
 
+# Different targets
 pc_run: directories	$(PC_OBJS)
 	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_RUN -o ./Debug/source/main.o ./source/main.c
 	$(PC_CC) $(PC_OBJS) ./Debug/source/main.o -o $(EXE)
@@ -106,6 +120,7 @@ fb_debug: directories $(ARM_OBJS) linkerfile.ld
 	
 
 
+# Target for making directories that are needed
 # https://stackoverflow.com/questions/1950926/create-directories-using-make-file
 # Leveraged code
 OUT_DIR := Debug Debug/CMSIS Debug/drivers Debug/board Debug/source \
@@ -116,10 +131,10 @@ directories:
 	$(MK) $(OUT_DIR)
 
 
+# ARM Targets
+# Targets for compiling required object files
 # https://mcuoneclipse.com/2017/07/22/tutorial-makefile-projects-with-eclipse/
 # Leveraged code
-
-
 ./Debug/CMSIS/%.o: ./CMSIS/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 	
@@ -140,12 +155,12 @@ directories:
 
 
 
-	
+# PC Targets
+# Targets for compiling required object files
 ./Debug/source/pc/%.o: ./source/pc/%.c
 	$(PC_CC) $(PC_FLAGS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 
 	
+# Target for cleaning builds
 clean:
 	rm -rf Debug
-	
-	

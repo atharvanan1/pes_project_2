@@ -19,7 +19,7 @@
 void loop(uint16_t number)
 {
 	// loop_var will be used to generate delay
-	uint64_t loop_var = number * (CLOCKS_PER_SEC - 60000) / 2;
+	uint64_t loop_var = number * 680000;
 	while(loop_var != 0)
 	{
 		loop_var--;

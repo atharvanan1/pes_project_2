@@ -49,6 +49,7 @@ void proc_init(void)
  */
 void led_execute(void)
 {
+	char *state = NULL;
 	if (flag == RED)
 	{
 		GPIO_WritePinOutput(RED_GPIO, RED_PIN, mode);
