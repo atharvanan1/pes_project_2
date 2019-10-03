@@ -2,7 +2,9 @@
  * pc_loop.h
  *
  *  Created on: Sep 28, 2019
- *      Author: azzentys
+ *  Author: Atharva Nandanwar
+ *  Email: Atharva.Nandanwar@Colorado.EDU
+ *
  */
 
 #ifndef PC_PC_LOOP_H_

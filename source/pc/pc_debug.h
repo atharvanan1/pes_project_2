@@ -2,7 +2,9 @@
  * pc_debug.h
  *
  *  Created on: Oct 1, 2019
- *      Author: azzentys
+ *  Author: Atharva Nandanwar
+ *  Email: Atharva.Nandanwar@Colorado.EDU
+ *
  */
 
 #ifndef PC_PC_DEBUG_H_
@@ -13,6 +15,7 @@
 #include <time.h>
 #include <stdint.h>
 
+// Variables declared in main
 extern clock_t prevEvent;
 extern clock_t thisEvent;
 extern double diffEvent;

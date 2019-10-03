@@ -2,7 +2,9 @@
  * fb_led.c
  *
  *  Created on: Sep 28, 2019
- *      Author: azzentys
+ *  Author: Atharva Nandanwar
+ *  Email: Atharva.Nandanwar@Colorado.EDU
+ *
  */
 
 #include "fb_led.h"
@@ -10,11 +12,18 @@
 #include "fsl_gpio.h"
 #include "board.h"
 
+/*
+ * Function - proc_init
+ * Arguments - none
+ * Brief - Initialize system peripherals in desired state
+ *
+ */
 void proc_init(void)
 {
+	// Initialize Pins, Clocks, and DebugConsole
 	BOARD_InitPins();
 	BOARD_BootClockRUN();
-	BOARD_InitDebugConsole();
+	//BOARD_InitDebugConsole();
 	gpio_pin_config_t red_led = {
 	        kGPIO_DigitalOutput, 1,
 	    };
@@ -32,24 +41,25 @@ void proc_init(void)
 	GPIO_WritePinOutput(GREEN_GPIO, GREEN_PIN, LOW);
 }
 
-void led_execute(uint8_t flag, uint8_t mode)
+/*
+ * Function - led_execute
+ * Arguments - none
+ * Brief - Freedom Board version of execution
+ *
+ */
+void led_execute(void)
 {
-	char *type = NULL;
-	char *state = NULL;
 	if (flag == RED)
 	{
 		GPIO_WritePinOutput(RED_GPIO, RED_PIN, mode);
-		type = "RED";
 	}
 	else if (flag == BLUE)
 	{
 		GPIO_WritePinOutput(BLUE_GPIO, BLUE_PIN, mode);
-		type = "BLUE";
 	}
 	else if (flag == GREEN)
 	{
 		GPIO_WritePinOutput(GREEN_GPIO, GREEN_PIN, mode);
-		type = "GREEN";
 	}
 	state = (mode == 1)?"ON":"OFF";
 }

@@ -2,7 +2,9 @@
  * fb_loop.h
  *
  *  Created on: Sep 28, 2019
- *      Author: azzentys
+ *  Author: Atharva Nandanwar
+ *  Email: Atharva.Nandanwar@Colorado.EDU
+ *
  */
 
 #ifndef FB_FB_LOOP_H_
