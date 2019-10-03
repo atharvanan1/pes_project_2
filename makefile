@@ -3,7 +3,7 @@ ARM_LL = arm-none-eabi-gcc
 PC_CC = gcc
 
 EXE := \
-	./object/pes_project_2.axf
+	./Debug/pes_project_2.axf
 
 PC_FLAGS := -Wall -Werror -c -std=c99 -O0 -g3
 
@@ -11,92 +11,105 @@ ARM_FLAGS := -c -std=gnu99 -O0 \
 	-g3 -fmessage-length=0 -ffunction-sections -fdata-sections \
 	-fno-builtin -fno-common -mcpu=cortex-m0plus -mthumb
 
-LL_FLAGS := -nostdlib -Xlinker -Map="object/MyMakeProject.map" \
+LL_FLAGS := -nostdlib -Xlinker -Map="Debug/pes_project_2.map" \
 	-Xlinker --gc-sections -Xlinker -print-memory-usage \
 	-mcpu=cortex-m0plus -mthumb -T linkerfile.ld -o $(EXE)
 
 ARM_INCS := -I"./board" -I"./CMSIS" -I"./drivers" -I"./source" -I"./startup" -I"./utilities" -I"./source/fb" -I"./include"
+
+PC_INCS := -I"./source" -I"./source/pc"
 
 ARM_DEFS := -D__REDLIB__ -DDEBUG -DCPU_MKL25Z128VLK4 \
 	-DFRDM_KL25Z -DFREEDOM -DCPU_MKL25Z128VLK4_cm0plus \
 	-DSDK_DEBUGCONSOLE=1 -DCR_INTEGER_PRINTF -D__MCUXPRESSO \
 	-D__USE_CMSIS
 
-PC_INCS := -I"./source" -I"./source/pc"
-
 ARM_OBJS = \
-	./object/board/board.o \
-	./object/board/clock_config.o \
-	./object/board/peripherals.o \
-	./object/board/pin_mux.o \
-	./object/CMSIS/system_MKL25Z4.o \
-	./object/drivers/fsl_clock.o \
-	./object/drivers/fsl_common.o \
-	./object/drivers/fsl_flash.o \
-	./object/drivers/fsl_gpio.o \
-	./object/drivers/fsl_lpsci.o \
-	./object/drivers/fsl_rtc.o \
-	./object/drivers/fsl_smc.o \
-	./object/drivers/fsl_uart.o \
-	./object/startup/startup_mkl25z4.o \
-	./object/utilities/fsl_debug_console.o \
-	./object/source/fb/fb_led.o \
-	./object/source/fb/fb_loop.o \
-	./object/source/fb/fb_debug.o
-
-PC_OBJS = \
-	./object/source/pc/pc_print.o \
-	./object/source/pc/pc_loop.o \
-	./object/source/pc/pc_debug.o
-	
+	./Debug/board/board.o \
+	./Debug/board/clock_config.o \
+	./Debug/board/peripherals.o \
+	./Debug/board/pin_mux.o \
+	./Debug/CMSIS/system_MKL25Z4.o \
+	./Debug/drivers/fsl_clock.o \
+	./Debug/drivers/fsl_common.o \
+	./Debug/drivers/fsl_flash.o \
+	./Debug/drivers/fsl_gpio.o \
+	./Debug/drivers/fsl_lpsci.o \
+	./Debug/drivers/fsl_rtc.o \
+	./Debug/drivers/fsl_smc.o \
+	./Debug/drivers/fsl_uart.o \
+	./Debug/startup/startup_mkl25z4.o \
+	./Debug/utilities/fsl_debug_console.o \
+	./Debug/source/fb/fb_led.o \
+	./Debug/source/fb/fb_loop.o \
+	./Debug/source/fb/fb_debug.o
 
 ARM_DEPS = \
-	./object/board/board.d \
-	./object/board/clock_config.d \
-	./object/board/peripherals.d \
-	./object/board/pin_mux.d \
-	./object/CMSIS/system_MKL25Z4.d \
-	./object/drivers/fsl_clock.d \
-	./object/drivers/fsl_common.d \
-	./object/drivers/fsl_flash.d \
-	./object/drivers/fsl_gpio.d \
-	./object/drivers/fsl_lpsci.d \
-	./object/drivers/fsl_rtc.d \
-	./object/drivers/fsl_smc.d \
-	./object/drivers/fsl_uart.d \
-	./object/startup/startup_mkl25z4.d \
-	./object/utilities/fsl_debug_console.d \
-	./object/source/fb/fb_led.d \
-	./object/source/fb/fb_loop.d \
-	./object/source/fb/fb_debug.d
+	./Debug/board/board.d \
+	./Debug/board/clock_config.d \
+	./Debug/board/peripherals.d \
+	./Debug/board/pin_mux.d \
+	./Debug/CMSIS/system_MKL25Z4.d \
+	./Debug/drivers/fsl_clock.d \
+	./Debug/drivers/fsl_common.d \
+	./Debug/drivers/fsl_flash.d \
+	./Debug/drivers/fsl_gpio.d \
+	./Debug/drivers/fsl_lpsci.d \
+	./Debug/drivers/fsl_rtc.d \
+	./Debug/drivers/fsl_smc.d \
+	./Debug/drivers/fsl_uart.d \
+	./Debug/startup/startup_mkl25z4.d \
+	./Debug/utilities/fsl_debug_console.d \
+	./Debug/source/fb/fb_led.d \
+	./Debug/source/fb/fb_loop.d \
+	./Debug/source/fb/fb_debug.d
+
+PC_OBJS = \
+	./Debug/source/pc/pc_print.o \
+	./Debug/source/pc/pc_loop.o \
+	./Debug/source/pc/pc_debug.o
 	
+PC_DEPS = \
+	./Debug/source/pc/pc_print.d \
+	./Debug/source/pc/pc_loop.d \
+	./Debug/source/pc/pc_debug.d
 
-all: fb_run
+ifeq ($(BV),FB_RUN)
+build_version := fb_run
+else ifeq ($(BV),FB_DEBUG)
+build_version := fb_debug
+else ifeq ($(BV),PC_RUN)
+build_version := pc_run
+else ifeq ($(BV),PC_DEBUG)
+build_version := pc_debug
+endif
 
-pc_run:	directories $(PC_OBJS)
-	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_RUN -o ./object/source/main.o ./source/main.c
-	$(PC_CC) $(PC_OBJS) ./object/source/main.o -o $(EXE)
-	#./$(EXE)
+all: $(EXE)
+
+$(EXE): $(build_version)
+
+pc_run: directories	$(PC_OBJS)
+	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_RUN -o ./Debug/source/main.o ./source/main.c
+	$(PC_CC) $(PC_OBJS) ./Debug/source/main.o -o $(EXE)
 	
 pc_debug: directories $(PC_OBJS)
-	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_DEBUG -o ./object/source/main.o ./source/main.c
-	$(PC_CC) $(PC_OBJS) ./object/source/main.o -o $(EXE)
-	#./$(EXE)
+	$(PC_CC) $(PC_FLAGS) $(PC_INCS) -DPC_DEBUG -o ./Debug/source/main.o ./source/main.c
+	$(PC_CC) $(PC_OBJS) ./Debug/source/main.o -o $(EXE)
 
-fb_run: directories $(ARM_OBJS) linkerfile.ld
-	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_RUN -o ./object/source/main.o ./source/main.c
-	$(ARM_LL) $(LL_FLAGS) $(ARM_OBJS) ./object/source/main.o
+fb_run: directories	$(ARM_OBJS) linkerfile.ld
+	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_RUN -o ./Debug/source/main.o ./source/main.c
+	$(ARM_LL) $(LL_FLAGS) $(ARM_OBJS) ./Debug/source/main.o -o $(EXE)
 	
-fb_debug: directories  $(ARM_OBJS) linkerfile.ld
-	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_DEBUG -o ./object/source/main.o ./source/main.c
-	$(ARM_LL) $(LL_FLAGS) $(ARM_OBJS) ./object/source/main.o
+fb_debug: directories $(ARM_OBJS) linkerfile.ld
+	$(ARM_CC) $(ARM_FLAGS) $(ARM_INCS) -DFB_DEBUG -o ./Debug/source/main.o ./source/main.c
+	$(ARM_LL) $(LL_FLAGS) $(ARM_OBJS) ./Debug/source/main.o  -o $(EXE)
 	
 
 
 # https://stackoverflow.com/questions/1950926/create-directories-using-make-file
 # Leveraged code
-OUT_DIR := object object/CMSIS object/drivers object/board object/source \
-	object/source/fb object/source/pc object/utilities object/startup
+OUT_DIR := Debug Debug/CMSIS Debug/drivers Debug/board Debug/source \
+	Debug/source/fb Debug/source/pc Debug/utilities Debug/startup
 	
 MK := mkdir -p
 directories:
@@ -107,32 +120,32 @@ directories:
 # Leveraged code
 
 
-./object/CMSIS/%.o: ./CMSIS/%.c
+./Debug/CMSIS/%.o: ./CMSIS/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 	
-./object/drivers/%.o: ./drivers/%.c
+./Debug/drivers/%.o: ./drivers/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 	
-./object/board/%.o: ./board/%.c
+./Debug/board/%.o: ./board/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 	
-./object/startup/%.o: ./startup/%.c
+./Debug/startup/%.o: ./startup/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 	
-./object/utilities/%.o: ./utilities/%.c
+./Debug/utilities/%.o: ./utilities/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 	
-./object/source/fb/%.o: ./source/fb/%.c
+./Debug/source/fb/%.o: ./source/fb/%.c
 	$(ARM_CC) $(ARM_FLAGS) $(ARM_DEFS) $(ARM_INCS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 
 
 
 	
-./object/source/pc/%.o: ./source/pc/%.c
+./Debug/source/pc/%.o: ./source/pc/%.c
 	$(PC_CC) $(PC_FLAGS) -MMD -MP -MF"./$(@:%.o=%.d)" -MT"./$(@:%.o=%.o)" -MT"./$(@:%.o=%.d)" -o "$@" "$<"
 
 	
 clean:
-	rm -rf object
+	rm -rf Debug
 	
 	

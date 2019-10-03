@@ -7,16 +7,14 @@
 
 #include "fb_led.h"
 #include "pin_mux.h"
-#include "clock_config.h"
 #include "fsl_gpio.h"
 #include "board.h"
-#include <stdint.h>
-
 
 void proc_init(void)
 {
 	BOARD_InitPins();
 	BOARD_BootClockRUN();
+	BOARD_InitDebugConsole();
 	gpio_pin_config_t red_led = {
 	        kGPIO_DigitalOutput, 1,
 	    };

@@ -7,6 +7,7 @@
 
 #include "main.h"
 
+
 uint16_t time_table[20] = {3000, 1000, 2000, 600, 1000, 400, 1000,\
 		                   200, 500, 100, 500, 100, 500, 100, 1000,\
 						   200, 1000, 400, 2000, 600};
@@ -14,10 +15,13 @@ uint16_t time_table[20] = {3000, 1000, 2000, 600, 1000, 400, 1000,\
 int main(void)
 {
 	uint8_t looper = 0;
-#ifdef FB_DEBUG
-	rtc_init();
-#endif
+//#ifdef FB_DEBUG
+//	rtc_init();
+//#endif
 	proc_init();
+#if defined(FB_DEBUG) || defined(PC_DEBUG)
+	debug();
+#endif
 
 	for (uint8_t i = 0; i < 10; i++)
 	{
@@ -29,9 +33,6 @@ int main(void)
 			loop(time_table[j]);
 			looper++;
 			(looper == 18)?looper = 0:looper;
-#if defined(FB_DEBUG) || defined(PC_DEBUG)
-			debug();
-#endif
 		}
 	}
 	return 0;

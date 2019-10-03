@@ -22,17 +22,17 @@ uint8_t flag;
 uint8_t mode;
 
 #ifdef PC_RUN
-	#include "pc_loop.h"
-	#include "pc_print.h"
-#elif FB_RUN
-	#include "fb_loop.h"
-	#include "fb_led.h"
-#elif FB_DEBUG
-	#include "fb_loop.h"
-	#include "fb_led.h"
-	#include "fb_debug.h"
+#include "pc_loop.h"
+#include "pc_print.h"
 #elif PC_DEBUG
-	#include "pc_loop.h"
-	#include "pc_print.h"
-	#include "pc_debug.h"
+#include "pc_loop.h"
+#include "pc_print.h"
+#include "pc_debug.h"
+#elif FB_RUN
+#include "fb_loop.h"
+#include "fb_led.h"
+#elif FB_DEBUG
+#include "fb_loop.h"
+#include "fb_led.h"
+#include "fb_debug.h"
 #endif
