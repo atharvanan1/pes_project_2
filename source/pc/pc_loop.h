@@ -10,5 +10,6 @@
 #endif /* PC_PC_LOOP_H_ */
 
 #include <stdint.h>
+#include <time.h>
 
 void loop(uint16_t number);

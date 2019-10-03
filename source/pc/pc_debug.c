@@ -11,7 +11,7 @@
 // Leveraged Code - https://stackoverflow.com/questions/5248915/execution-time-of-c-program
 // Time Difference
 
-void debug(void)
+void debug(uint16_t loop_num)
 {
 	prevEvent = thisEvent;
 	thisEvent = clock();

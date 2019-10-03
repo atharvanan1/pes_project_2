@@ -11,10 +11,11 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <stdint.h>
 
 extern clock_t prevEvent;
 extern clock_t thisEvent;
 extern double diffEvent;
 extern struct tm *time_data;
 
-void debug (void);
+void debug(uint16_t loop_num);
