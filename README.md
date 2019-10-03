@@ -1,6 +1,8 @@
 # PES Project 2
 ## Readme
 
+Name: Atharva Nandanwar
+
 This repository contains all the required files for PES Project 2.
 
 Recommended compiler for build targets
